@@ -8,9 +8,35 @@ export default defineComponent({
     function findIcon(id) {
         return WeatherConditionIcons[id];
     }
+    function getTemperature(temp) {
+      return (Math.round((temp - 273.15) * 10) / 10).toFixed(1);
+    }
+    function existAlert(name) {
+        for (let i = 0; i< getWeatherData().length; i++) {
+          if (getWeatherData()[i].alert && name === getWeatherData()[i].geographic_name)
+            return true;
+        }
+        return false;
+    }
+    function isTooLate(sunset, sunrise, time) {
+        let timeSunset = Date.parse('Thu, 01 Jan 1970 ' + sunset + ':00');
+        let timeSunrise = Date.parse('Thu, 01 Jan 1970 ' + sunrise + ':00');
+        let timeNow = Date.parse('Thu, 01 Jan 1970 ' + time + ':00');
+        let timeMidnight = Date.parse('Thu, 01 Jan 1970 00:00:00');
+        if (timeNow > timeMidnight && timeNow < timeSunrise) {
+          return 'weather-card--night';
+        }
+        if (timeNow < timeMidnight && timeNow > timeSunset) {
+          return 'weather-card--night';
+        }
+        return '';
+    }
     return {
       data: weatherData,
-      findIcon
+      findIcon,
+      getTemperature,
+      existAlert,
+      isTooLate,
     }
 
   },
@@ -19,10 +45,10 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
-        <li v-for="item in data" class="weather-card weather-card--night">
-          <div class="weather-alert">
+        <li v-for="item in data" class="weather-card" :class ="isTooLate(item.current.sunset, item.current.sunrise, item.current.dt)">
+          <div v-if="existAlert(item.geographic_name)" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
-            <span class="weather-alert__description">Королевская метеослужба короля Арагорна II: Предвещается наступление сильного шторма.</span>
+            <span  class="weather-alert__description">{{ item.alert.sender_name }}: {{ item.alert.description }}</span><br/>
           </div>
           <div>
             <h2 class="weather-card__name">
@@ -33,13 +59,13 @@ export default defineComponent({
             </div>
           </div>
           <div class="weather-conditions">
-            <div class="weather-conditions__icon" title="thunderstorm with heavy rain">{{ findIcon(item.current.weather.id) }}️</div>
-            <div class="weather-conditions__temp">15.0 °C</div>
+            <div class="weather-conditions__icon" :title="item.current.weather.description" >{{ findIcon(item.current.weather.id) }}️</div>
+            <div class="weather-conditions__temp">{{ getTemperature(item.current.temp) }} °C</div>
           </div>
           <div class="weather-details">
             <div class="weather-details__item">
               <div class="weather-details__item-label">Давление, мм рт. ст.</div>
-              <div class="weather-details__item-value">754</div>
+              <div class="weather-details__item-value">{{ Math.round(item.current.pressure * 0.75) }}</div>
             </div>
             <div class="weather-details__item">
               <div class="weather-details__item-label">Влажность, %</div>
