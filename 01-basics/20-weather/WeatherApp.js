@@ -5,9 +5,7 @@ export default defineComponent({
   name: 'WeatherApp',
   setup () {
     const weatherData = getWeatherData();
-    function findIcon(id) {
-        return WeatherConditionIcons[id];
-    }
+    const icons = WeatherConditionIcons;
     function getTemperature(temp) {
       return (Math.round((temp - 273.15) * 10) / 10).toFixed(1);
     }
@@ -33,7 +31,7 @@ export default defineComponent({
     }
     return {
       data: weatherData,
-      findIcon,
+      icons: icons,
       getTemperature,
       existAlert,
       isTooLate,
@@ -59,7 +57,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="weather-conditions">
-            <div class="weather-conditions__icon" :title="item.current.weather.description" >{{ findIcon(item.current.weather.id) }}️</div>
+            <div class="weather-conditions__icon" :title="item.current.weather.description" >{{ icons[item.current.weather.id] }}️</div>
             <div class="weather-conditions__temp">{{ getTemperature(item.current.temp) }} °C</div>
           </div>
           <div class="weather-details">
