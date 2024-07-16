@@ -1,11 +1,10 @@
-import { defineComponent } from 'vue/dist/vue.esm-bundler.js'
-import { getWeatherData, WeatherConditionIcons } from './weather.service.ts'
+import {defineComponent} from 'vue/dist/vue.esm-bundler.js'
+import {getWeatherData, WeatherConditionIcons} from './weather.service.ts'
 
 export default defineComponent({
   name: 'WeatherApp',
   setup () {
     const weatherData = getWeatherData();
-    const icons = WeatherConditionIcons;
     function getTemperature(temp) {
       return (Math.round((temp - 273.15) * 10) / 10).toFixed(1);
     }
@@ -31,7 +30,7 @@ export default defineComponent({
     }
     return {
       data: weatherData,
-      icons: icons,
+      icons: WeatherConditionIcons,
       getTemperature,
       existAlert,
       isTooLate,
