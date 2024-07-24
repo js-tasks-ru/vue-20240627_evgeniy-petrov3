@@ -9,24 +9,15 @@ export default defineComponent({
       return (Math.round((temp - 273.15) * 10) / 10).toFixed(1);
     }
     function existAlert(name) {
-        for (let i = 0; i< getWeatherData().length; i++) {
-          if (getWeatherData()[i].alert && name === getWeatherData()[i].geographic_name)
-            return true;
-        }
-        return false;
+      return !!getWeatherData().find(item => item.alert && item.geographic_name === name)
     }
     function isTooLate(sunset, sunrise, time) {
-        let timeSunset = Date.parse('Thu, 01 Jan 1970 ' + sunset + ':00');
-        let timeSunrise = Date.parse('Thu, 01 Jan 1970 ' + sunrise + ':00');
-        let timeNow = Date.parse('Thu, 01 Jan 1970 ' + time + ':00');
-        let timeMidnight = Date.parse('Thu, 01 Jan 1970 00:00:00');
-        if (timeNow > timeMidnight && timeNow < timeSunrise) {
-          return 'weather-card--night';
-        }
-        if (timeNow < timeMidnight && timeNow > timeSunset) {
-          return 'weather-card--night';
-        }
-        return '';
+      let timeMidnight = '00:00';
+      if (time > timeMidnight && time < sunrise) {
+        return true;
+      }
+      return time < timeMidnight && time > sunset;
+
     }
     return {
       data: weatherData,
@@ -42,7 +33,8 @@ export default defineComponent({
       <h1 class="title">Погода в Средиземье</h1>
 
       <ul class="weather-list unstyled-list">
-        <li v-for="item in data" class="weather-card" :class ="isTooLate(item.current.sunset, item.current.sunrise, item.current.dt)">
+        <li v-for="item in data" class="weather-card"
+            :class ="{ 'weather-card--night':  isTooLate(item.current.sunset, item.current.sunrise, item.current.dt) }">
           <div v-if="existAlert(item.geographic_name)" class="weather-alert">
             <span class="weather-alert__icon">⚠️</span>
             <span  class="weather-alert__description">{{ item.alert.sender_name }}: {{ item.alert.description }}</span><br/>
