@@ -13,27 +13,28 @@ export default defineComponent({
      * @param {MouseEvent} event
      */
     function handleClick(event) {
-      x = event.offsetX
-      y = event.offsetY
+      x.value = event.offsetX
+      y.value = event.offsetY
     }
 
-    // Следим за X и Y для установки нового положения
-    watch([x, y], () => {
-      // Находим метку и изменяем её положение
-      const map = document.querySelector('.pin')
-      map.style.left = `${x}px`
-      map.style.top = `${y}px`
-    })
+    function getTop() {
+      return y.value+'px';
+    }
+    function getLeft() {
+      return x.value+'px';
+    }
 
     return {
       handleClick,
+      getTop,
+      getLeft
     }
   },
 
   template: `
     <div class="map" @click="handleClick">
       <img class="map-image" src="./map.png" alt="Map" draggable="false" />
-      <span class="pin">📍</span>
+      <span class="pin" :style="{ top : getTop(), left: getLeft() }">📍</span>
     </div>
   `,
 })
