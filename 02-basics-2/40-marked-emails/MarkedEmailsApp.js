@@ -38,13 +38,9 @@ export default defineComponent({
       value: item,
       mark: search.value.trim() && item.toLowerCase().trim().includes(search.value.toLowerCase().trim())
     })));
-    function mark(item) {
-      return search.value.trim() && item.toLowerCase().trim().includes(search.value.toLowerCase().trim());
-    }
     return {
       filteredEmails,
       search,
-      mark,
     }
   },
 

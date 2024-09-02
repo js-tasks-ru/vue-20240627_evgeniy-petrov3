@@ -1,6 +1,5 @@
 import {computed, defineComponent, ref, watch} from 'vue'
 import { getMeetup } from './meetupsService.ts'
-import {set} from "@vueuse/core";
 
 export default defineComponent({
   name: 'SelectedMeetupApp',
@@ -9,7 +8,6 @@ export default defineComponent({
     const min = 1;
     const max = 5;
     const current = ref(1);
-    const input = ref('');
     const disabledUp = computed(() => {
       return current.value === max;
     })
@@ -42,7 +40,6 @@ export default defineComponent({
       current,
       disabledUp,
       disabledDown,
-      input,
       max,
       checked,
       setCount
