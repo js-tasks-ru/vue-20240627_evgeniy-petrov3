@@ -1,4 +1,4 @@
-import {computed, defineComponent, ref, watch} from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { getMeetup } from './meetupsService.ts'
 
 export default defineComponent({
@@ -14,42 +14,32 @@ export default defineComponent({
     const disabledDown = computed(() => {
       return current.value === min;
     });
-    const meetUp = ref(getMeetup(min).then(function (res) {
-      meetUp.value = res;
-    }));
-    function setMeetUp(id) {
-      if (current.value >= min && current.value <= max) {
-        getMeetup(id).then(function (result) {
-          meetUp.value = result;
-        })
-        current.value = id;
-      }
-    }
-    function checked(itemId) {
-      return itemId === current.value;
-    }
-    function setCount(id) {
-      current.value = id;
-    }
+    const meetUp = ref('');
+    const setMeetUp = async () => {
+        if (current.value >= min && current.value <= max) {
+          meetUp.value = await getMeetup(current.value);
+        }
+    };
     watch(current, (id)=> {
-      setMeetUp(id);
-    })
+      setMeetUp();
+    });
+    onMounted(() => {
+      setMeetUp();
+    });
 
     return {
       meetUp,
       current,
       disabledUp,
       disabledDown,
-      max,
-      checked,
-      setCount
+      max
     }
   },
 
   template: `
     <div class="meetup-selector">
       <div class="meetup-selector__control">
-        <button class="button button--secondary" type="button" :disabled="disabledDown" @click="setCount(current-1)">Предыдущий</button>
+        <button class="button button--secondary" type="button" :disabled="disabledDown" @click="current--">Предыдущий</button>
 
         <div class="radio-group" role="radiogroup">
           <div class="radio-group__button" v-for="itemId in max">
@@ -58,15 +48,15 @@ export default defineComponent({
               class="radio-group__input"
               type="radio"
               name="meetupId"
-              value="{{ itemId }}"
-              :checked="checked(itemId)"
-              @change="setCount(itemId)"
+              :value="itemId"
+              v-model="current"
+              :checked="itemId === current"
             />
             <label :for="'meetup-id-'+ itemId" class="radio-group__label">{{ itemId }}</label>
           </div>
         </div>
 
-        <button class="button button--secondary" type="button" :disabled="disabledUp" @click="setCount(current+1)">Следующий</button>
+        <button class="button button--secondary" type="button" :disabled="disabledUp" @click="current++">Следующий</button>
       </div>
 
       <div class="meetup-selector__cover">
