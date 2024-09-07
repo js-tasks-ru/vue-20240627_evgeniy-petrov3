@@ -20,7 +20,7 @@ export default defineComponent({
           meetUp.value = await getMeetup(current.value);
         }
     };
-    watch(current, (id)=> {
+    watch(current, ()=> {
       setMeetUp();
     });
     onMounted(() => {
