@@ -12,6 +12,7 @@ export default defineComponent({
     emails: {
       type: Array,
       required: true,
+      index: Number
     },
   },
 
@@ -22,6 +23,8 @@ export default defineComponent({
         :key="email"
         :email="email"
         :marked="isMarked"
+        :index="index"
+        @remove-email="$emit('removeEmail', index)"
       />
     </ul>
   `,

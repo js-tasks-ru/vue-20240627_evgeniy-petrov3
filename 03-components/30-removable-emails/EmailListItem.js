@@ -7,6 +7,7 @@ export default defineComponent({
     email: {
       type: String,
       required: true,
+      index: Number,
     },
 
     marked: {
@@ -18,7 +19,7 @@ export default defineComponent({
   template: `
     <li :class="{ marked }">
       {{ email }}
-      <button type="button" aria-label="Удалить" @click.stop>❌</button>
+      <button type="button" aria-label="Удалить" @click="$emit('removeEmail')">❌</button>
     </li>
   `,
 })
