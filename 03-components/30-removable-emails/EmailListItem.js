@@ -15,6 +15,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ['removeEmail:index'],
 
   template: `
     <li :class="{ marked }">

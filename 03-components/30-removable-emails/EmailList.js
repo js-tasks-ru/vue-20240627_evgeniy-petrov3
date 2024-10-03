@@ -14,6 +14,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['removeEmail:index'],
 
   template: `
     <ul class="emails-list unstyled-list" aria-label="Emails">
