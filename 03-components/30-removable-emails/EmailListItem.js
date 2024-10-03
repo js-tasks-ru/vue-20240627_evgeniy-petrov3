@@ -7,7 +7,6 @@ export default defineComponent({
     email: {
       type: String,
       required: true,
-      index: Number,
     },
 
     marked: {
@@ -15,7 +14,7 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['removeEmail:index'],
+  emits: ['removeEmail'],
 
   template: `
     <li :class="{ marked }">
