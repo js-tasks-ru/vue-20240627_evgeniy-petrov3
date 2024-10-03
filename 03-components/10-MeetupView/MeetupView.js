@@ -18,7 +18,10 @@ export default defineComponent({
     MeetupInfo
   },
   props: {
-    meetup: {}
+    meetup: {
+      type: Object,
+      required: true,
+    },
   },
 
   template: `

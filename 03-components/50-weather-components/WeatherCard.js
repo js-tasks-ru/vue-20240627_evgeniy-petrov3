@@ -1,6 +1,7 @@
 import { defineComponent } from 'vue/dist/vue.esm-bundler.js'
 import { WeatherConditionIcons } from './weather.service.ts'
 import './WeatherApp.css'
+import MeetupInfo from "../10-MeetupView/MeetupInfo.js";
 
 export default defineComponent({
   name: 'WeatherCard',
@@ -25,7 +26,10 @@ export default defineComponent({
     }
   },
   props: {
-    item: {}
+    item: {
+      type: Object,
+      required: true
+    }
   },
 
   template: `
