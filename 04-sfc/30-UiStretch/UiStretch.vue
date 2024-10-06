@@ -7,7 +7,7 @@
 </template>
 
 <style scoped>
-.stretch-container > * {
+.stretch-container > :slotted(*) {
   width: 100%;
   height: 100%;
 }
