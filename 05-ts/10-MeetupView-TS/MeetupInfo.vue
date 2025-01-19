@@ -1,23 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { UiIcon } from '@shgk/vue-course-ui'
 
-const props = defineProps({
+const props = defineProps<{
   organizer: {
-    type: String,
+    type: string,
     required: true,
   },
 
   place: {
-    type: String,
+    type: string,
     required: true,
   },
 
   date: {
-    type: Number,
+    type: number,
     required: true,
   },
-})
+}>();
 
 const isoDate = computed(() => new Date(props.date).toISOString().slice(0, 10))
 const localDate = computed(() =>

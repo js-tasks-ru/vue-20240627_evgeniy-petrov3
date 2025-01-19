@@ -1,13 +1,14 @@
-<script setup>
-defineProps({
+<script setup lang="ts">
+
+const props = defineProps<{
   description: {
-    type: String,
+    type: string,
   },
-})
+}>();
 </script>
 
 <template>
-  <div class="meetup-description">{{ description }}</div>
+  <div class="meetup-description">{{ props.description }}</div>
 </template>
 
 <style scoped>
