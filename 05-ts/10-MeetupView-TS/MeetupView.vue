@@ -1,34 +1,35 @@
-<script setup>
-// import type { MeetupDTO } from '@shgk/vue-course-ui'
+<script setup lang="ts">
+import type { MeetupDTO } from '@shgk/vue-course-ui'
 import { UiAlert, UiContainer } from '@shgk/vue-course-ui'
 import MeetupAgenda from './MeetupAgenda.vue'
 import MeetupDescription from './MeetupDescription.vue'
 import MeetupCover from './MeetupCover.vue'
 import MeetupInfo from './MeetupInfo.vue'
 
-defineProps({
+const props = defineProps<{
   meetup: {
-    // Настоящий тип - MeetupDTO
-    type: Object,
+    type : MeetupDTO,
     required: true,
   },
-})
+
+}>()
+
 </script>
 
 <template>
   <div>
-    <MeetupCover :title="meetup.title" :image="meetup.image" />
+    <MeetupCover :title="props.meetup.title" :image="props.meetup.image" />
     <UiContainer>
       <div class="meetup">
         <div class="meetup__content">
           <h2>Описание</h2>
-          <MeetupDescription :description="meetup.description" />
+          <MeetupDescription :description="props.meetup.description" />
           <h2>Программа</h2>
-          <MeetupAgenda v-if="meetup.agenda.length" :agenda="meetup.agenda" />
+          <MeetupAgenda v-if="props.meetup.agenda.length" :agenda="props.meetup.agenda" />
           <UiAlert v-else>Программа пока пуста...</UiAlert>
         </div>
         <div class="meetup__aside">
-          <MeetupInfo :organizer="meetup.organizer" :place="meetup.place" :date="meetup.date" />
+          <MeetupInfo :organizer="props.meetup.organizer" :place="props.meetup.place" :date="props.meetup.date" />
           <div class="meetup__aside-buttons"></div>
         </div>
       </div>

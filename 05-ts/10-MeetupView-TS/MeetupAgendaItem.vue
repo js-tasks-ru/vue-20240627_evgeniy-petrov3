@@ -1,15 +1,14 @@
-<script setup>
-// import type { MeetupAgendaItemDTO } from '@shgk/vue-course-ui'
+<script setup lang="ts">
+import type { MeetupAgendaItemDTO } from '@shgk/vue-course-ui'
 import { computed } from 'vue'
 import { UiIcon } from '@shgk/vue-course-ui'
 
-const props = defineProps({
+const props = defineProps<{
   agendaItem: {
-    // Настоящий тип - MeetupAgendaItemDTO
-    type: Object,
+    type: MeetupAgendaItemDTO,
     required: true,
   },
-})
+}>();
 
 const agendaItemDefaultTitles = {
   registration: 'Регистрация',
